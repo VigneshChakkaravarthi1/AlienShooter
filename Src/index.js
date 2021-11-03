@@ -1,5 +1,6 @@
 const grid =document.querySelector('.grid');//The game area 300px*300px
 const score=document.querySelector('.score');//To display the aliens killed
+const resultsDisplay = document.querySelector('.results')
 let shooterIndex=202;// shooter to be placed in the last row middle
 let width =15;//the width of the grid
 let direction =1;//used to move the alien right and left. for right =1 , left =-1
@@ -117,10 +118,29 @@ function moveAliens()
     
 
     draw();
+    if(squares[shooterIndex].classList.contains('alien','shooter'))
+    {
+        resultsDisplay.innerHTML='Game Over';
+        clearInterval(alienMove)
+    }
+    for(let i=0;i<alien.length;i++)
+    {
+        if(alien[i]>squares.length)
+        {
+            resultsDisplay.innerHTML='Game Over';
+            clearInterval(alienMove)
+        }
+
+    }
+    if(aliensShot.length===alien.length)
+    {
+        resultsDisplay.innerHTML='You Win';
+        clearInterval(alienMove);
+    }
 
 }
 
-setInterval(moveAliens,600)
+alienMove=setInterval(moveAliens,600)
 
 function shoot(event)
 {
@@ -131,7 +151,7 @@ function shoot(event)
     let shootBeam=shooterIndex
     function moveShootUp()
     {   
-        if(shootBeam>0)
+        if(shootBeam-width>=0)
         {
         
         
@@ -153,6 +173,7 @@ function shoot(event)
         }
     }
     
+    
     }
     shoot=setInterval(moveShootUp,100)
 }
@@ -160,3 +181,6 @@ function shoot(event)
 }
 
 document.addEventListener('keydown',shoot)
+
+
+  
