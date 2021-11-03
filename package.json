@@ -1,0 +1,11 @@
+{
+  "name": "space-invaders-javascript",
+  "version": "1.0.0",
+  "description": "Space Invaders using Java Script",
+  "main": "index.js",
+  "scripts": {
+    "test": "\"node .src/index.js\""
+  },
+  "author": "Vignesh",
+  "license": "ISC"
+}
