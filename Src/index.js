@@ -7,6 +7,7 @@ let direction =1;//used to move the alien right and left. for right =1 , left =-
 let invadersId;
 let goingRight=true;
 let aliensShot=[];//stores the index of the alien shot
+let kills=0;
 
 for(let i=0;i<225;i++)
 {
@@ -56,21 +57,15 @@ function moveShooter(event)
             {
                 shooterIndex=shooterIndex-1;
             }
-            break
+            break;
         case 'ArrowRight':
             
                 if(shooterIndex%width !=14)//if shooter not in the right corner
                 {
                     shooterIndex=shooterIndex+1;
                 }
-                break;
-
-        case 'Enter':
-            shoot();
-            break;
-            
-        default:
-            break;
+                break;   
+        
     }
     squares[shooterIndex].classList.add('shooter') //Add shooter class to the new div
 }
@@ -129,6 +124,7 @@ function moveAliens()
         {
             resultsDisplay.innerHTML='Game Over';
             clearInterval(alienMove)
+            
         }
 
     }
@@ -136,51 +132,56 @@ function moveAliens()
     {
         resultsDisplay.innerHTML='You Win';
         clearInterval(alienMove);
+        
     }
 
 }
 
-alienMove=setInterval(moveAliens,600)
+alienMove=setInterval(moveAliens,400)
 
-function shoot(event)
+
+
+function fireBeam(event)
 {
-    if(event.key==='ArrowUp')
+    let timeMoveBeam;
+    let beamIndex=shooterIndex;
+    function moveBeam()
     {
-    
-    
-    let shootBeam=shooterIndex
-    function moveShootUp()
-    {   
-        if(shootBeam-width>=0)
-        {
         
-        
-        
-        
-        squares[shootBeam].classList.remove('laser');
-        shootBeam=shootBeam-width;
-        squares[shootBeam].classList.add('laser');
-        console.log(squares[shootBeam])
-
-
-        if(squares[shootBeam].classList.contains('alien')){
-            squares[shootBeam].classList.remove('laser');
-            squares[shootBeam].classList.remove('alien');
             
-            clearInterval(shoot)
-            aliensShot.push(alien.indexOf(shootBeam));
-            clearInterval(shoot);
+        if(beamIndex>=0)
+        {
+            squares[beamIndex].classList.remove('beam');
+            beamIndex-=width;
+            if(beamIndex>=0)
+            {
+                squares[beamIndex].classList.add('beam');
+            if(squares[beamIndex].classList.contains('alien'))
+        {
+            squares[beamIndex].classList.remove('alien','beam');
+            aliensShot.push(alien.indexOf(beamIndex))
+            kills+=1;
+            resultsDisplay.innerHTML=kills;
+            clearInterval(timeMoveBeam)
+        }   
+
+            }
+            
+
         }
+        else{
+            clearInterval(timeMoveBeam)
+        }
+        
+        
+
     }
-    
-    
+    switch (event.key)
+    {
+        case 'ArrowUp':
+            timeMoveBeam=setInterval(moveBeam,100)
+            
     }
-    shoot=setInterval(moveShootUp,100)
 }
 
-}
-
-document.addEventListener('keydown',shoot)
-
-
-  
+document.addEventListener('keydown',fireBeam)
