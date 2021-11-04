@@ -97,7 +97,7 @@ function moveAliens()
 
     for(let i=0;i<alien.length;i++)
     {
-        if(alien[i]%width===14 && direction===1)
+        if(alien[i]%width===14 && direction===1 )
         {
             moveDown();
             direction=-1
